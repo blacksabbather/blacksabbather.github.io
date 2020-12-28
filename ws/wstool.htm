@@ -30,6 +30,7 @@
 
     
     <script type="text/javascript">
+	fetch('https://fapi.binace.com/fapi/v1/exchangeInfo').then(res => res.json());
 
         let wsurl = document.querySelector('#wsurl');
         let button2 = document.querySelector('#button2');

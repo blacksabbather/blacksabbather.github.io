@@ -1,0 +1,133 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+		<script>
+			function toggleAPI(){
+				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_public"){
+					document.getElementById("API").style.display = "none";
+				}
+				else{
+					document.getElementById("API").style.display = "block";
+				}
+			}
+		</script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	</head>
+<body>
+	<h1>bybit testnet</h1>
+	<p>    
+	WSURL: <select onchange="toggleAPI()" name="wsurl" id="wsurl">
+	<option value="wss://stream.bybit.com/realtime_private">wss://stream.bybit.com/realtime_private</option>
+	<option value="wss://stream.bybit.com/realtime">wss://stream.bybit.com/realtime</option>
+	<option value="wss://stream.bybit.com/realtime_public">wss://stream.bybit.com/realtime_public</option>
+	</select>
+	</p>
+	<p id="API">
+		API_Key: <input name="api_key" id="api_key" value="0ydXMY63m867Pla8mi"><br/>
+		API_Secret: <input name="api_secret" id="api_secret" value="sCUzGEZxAKoX28XmrGNrW2pYOExKb8gx9FyJ"><br/>
+	</p>
+	<p>
+	<button id="button_link">link</button>
+	<button id="button_close">close</button>
+	</p>
+	<p>
+	message:
+
+	</p>
+	<p>
+	<textarea id="message" cols="100" rows="5">{"op": "subscribe", "args": ["position"]}&#13;&#10;{"op":"subscribe","args":["trade.ETHUSDT|BTCUSDT|XRPUSDT"]}</textarea>
+	</p>
+	<p>
+	<button id="send_sub">send</button>
+	</p>
+	<p>
+	DATA: 
+	</p>
+	<p>
+	<textarea id="wsdata" cols="150" rows="20" style="resize:none"></textarea>
+	</p>
+	<script type="text/javascript">
+	let wsurl = document.querySelector('#wsurl');
+	let button_link = document.querySelector('#button_link');
+	let button_close = document.querySelector('#button_close');
+	let send_sub = document.querySelector('#send_sub');
+	let message= document.querySelector('#message');
+	let wsdata = document.querySelector('#wsdata');
+	let data = {};
+	let i = 0;
+	function connectPrivate(wssHandler){
+		var keys = { 
+			'akey' : document.getElementById("api_key").value,
+			'skey' : document.getElementById("api_secret").value
+		};
+		var expires = Date.now()+50000;
+		var signature = CryptoJS.HmacSHA256('GET/realtime'+expires,keys['skey']).toString(CryptoJS.enc.Hex);
+		var auth={"op":"auth","args":[keys['akey'],expires,signature]};
+		wssHandler.send(JSON.stringify(auth));
+	}
+	button_link.addEventListener('click',()=>{
+		const binancewss = new WebSocket(wsurl.value);
+		switch(binancewss.readyState){
+			case 0:  
+			wsdata.value = wsdata.value + 'linking' + '\n' + "……" + '\n';
+			console.log(binancewss.readyState);
+			console.log("Socket has been created. The connection is not yet open.");
+			break;
+
+			case 1:
+			console.log(binancewss.readyState);
+			console.log("The connection is open and ready to communicate.");
+			break;
+
+			case 2:
+			console.log(binancewss.readyState);
+			console.log("The connection is in the process of closing.");
+			break;
+
+			case 3:
+			console.log(binancewss.readyState);
+			console.log("The connection is closed or couldn't be opened.");
+			break;
+		}
+		binancewss.addEventListener('open',event=>{
+			wsdata.value = wsdata.value + 'linked' + '\n' + "……" + '\n';
+			console.log(binancewss.readyState);
+			console.log("The connection is open and ready to communicate.");
+			if(document.getElementById("wsurl").value!="wss://stream.bybit.com/realtime_public"){
+				connectPrivate(binancewss);
+			}
+			setInterval( wssHandler => wssHandler.send('{"op":"ping"}'), 10000, binancewss);	
+		})
+		binancewss.addEventListener('close',event=>{
+			wsdata.value = wsdata.value + 'closed' + '\n' + "……" + '\n';
+			console.log(binancewss.readyState);
+			console.log("The connection is closed or couldn't be opened.");
+		})
+
+		binancewss.addEventListener('message',event=>{
+			console.log("Getting message");
+			wsdata.value = wsdata.value + event.data + '\n';
+			wsdata.scrollTop = wsdata.scrollHeight;
+		})
+
+		send_sub.addEventListener('click',()=>{
+			wa=message.value;
+			console.log(wa)
+			binancewss.send(wa);
+		})
+		button_close.addEventListener('click', ()=>{
+			if(binancewss.readyState !== 3){
+				binancewss.close();
+			}
+
+			if(binancewss.readyState === 2){
+			wsdata.value = wsdata.value + 'closing' + '\n' + "……" + '\n';
+			console.log(binancewss.readyState);
+			console.log("The connection is in the process of closing.");
+			}
+		})
+	})
+
+	</script>
+
+</body></html>

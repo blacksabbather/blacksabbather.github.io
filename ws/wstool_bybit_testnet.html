@@ -109,13 +109,14 @@
 
 		binancewss.addEventListener('message',event=>{
 			console.log("Getting message");
+			console.log(event.data);
 			wsdata.value = wsdata.value + event.data + '\n';
 			wsdata.scrollTop = wsdata.scrollHeight;
 		})
 
 		send_sub.addEventListener('click',()=>{
 			wa=message.value;
-			console.log(wa)
+			//console.log(wa)
 			binancewss.send(wa);
 		})
 		button_close.addEventListener('click', ()=>{

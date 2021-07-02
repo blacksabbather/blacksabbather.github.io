@@ -3,11 +3,11 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 		<script>
 			function toggleAPI(){
-				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_public"){
-					document.getElementById("API").style.display = "none";
+				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/ws"){
+					document.getElementById("API").style.display = "block";
 				}
 				else{
-					document.getElementById("API").style.display = "block";
+					document.getElementById("API").style.display = "none";
 				}
 			}
 		</script>
@@ -20,11 +20,15 @@
 	<option value="wss://stream.bybit.com/realtime_private">wss://stream.bybit.com/realtime_private</option>
 	<option value="wss://stream.bybit.com/realtime">wss://stream.bybit.com/realtime</option>
 	<option value="wss://stream.bybit.com/realtime_public">wss://stream.bybit.com/realtime_public</option>
+	<option value="wss://stream.bybit.com/spot/quote/ws/v1">wss://stream.bybit.com/spot/quote/ws/v1</option>
+	<option value="wss://stream.bybit.com/spot/quote/ws/v2">wss://stream.bybit.com/spot/quote/ws/v2</option>
+	<option value="wss://stream.bybit.com/spot/ws">wss://stream.bybit.com/spot/ws</option>
 	</select>
 	</p>
 	<p id="API">
-		API_Key: <input name="api_key" id="api_key" value="r7LroJw6Geq2kguE9w"><br/>
-		API_Secret: <input name="api_secret" id="api_secret" value="1wjDr110Gmyud3M1idqVopEh69VJnKGr0n7s"><br/>
+		Using read-only api key is highly recommended for your own safety
+		API_Key: <input name="api_key" id="api_key" value="SB0QqQTqivEhoPbT4Y"><br/>
+		API_Secret: <input name="api_secret" id="api_secret" value="QwQL3zXLNbfusjtR3kvtNXC60WgJCQoywni3"><br/>
 	</p>
 	<p>
 	<button id="button_link">link</button>
@@ -93,7 +97,7 @@
 			wsdata.value = wsdata.value + 'linked' + '\n' + "……" + '\n';
 			console.log(binancewss.readyState);
 			console.log("The connection is open and ready to communicate.");
-			if(document.getElementById("wsurl").value!="wss://stream.bybit.com/realtime_public"){
+			if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/ws"){
 				connectPrivate(binancewss);
 			}
 			setInterval( wssHandler => wssHandler.send('{"op":"ping"}'), 10000, binancewss);	
@@ -106,13 +110,13 @@
 
 		binancewss.addEventListener('message',event=>{
 			console.log("Getting message");
+			console.log(event.data);
 			wsdata.value = wsdata.value + event.data + '\n';
 			wsdata.scrollTop = wsdata.scrollHeight;
 		})
 
 		send_sub.addEventListener('click',()=>{
 			wa=message.value;
-			console.log(wa)
 			binancewss.send(wa);
 		})
 		button_close.addEventListener('click', ()=>{

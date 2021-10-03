@@ -9,6 +9,12 @@
 				else{
 					document.getElementById("API").style.display = "none";
 				}
+				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/ws"){
+					document.getElementById("message").style.display = "none";
+				}
+				else{
+					document.getElementById("message").style.display = "block";
+				}
 			}
 		</script>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,13 +33,14 @@
 	</p>
 	<p id="API">
 		Using read-only api key is highly recommended for your own safety <br/>
-		API_Key: <input name="api_key" id="api_key" value="SB0QqQTqivEhoPbT4Y"><br/>
-		API_Secret: <input name="api_secret" id="api_secret" value="QwQL3zXLNbfusjtR3kvtNXC60WgJCQoywni3"><br/>
+		API_Key: <input name="api_key" id="api_key" value="snITFQouk3t0Cl4ZYP"><br/>
+		API_Secret: <input name="api_secret" id="api_secret" value="sqUPzIZGSIiNKZc3U0vFx79LvnlaMEuqMZJv"><br/>
 	</p>
 	<p>
 	<button id="button_link">link</button>
 	<button id="button_close">close</button>
 	</p>
+	<div id="message">
 	<p>
 	message:
 
@@ -44,6 +51,7 @@
 	<p>
 	<button id="send_sub">send</button>
 	</p>
+	</div>
 	<p>
 	DATA: 
 	</p>

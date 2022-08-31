@@ -5,7 +5,7 @@
 			environment="stream-testnet";
 			domains=["bybit.com","bytick.com"];
 			privateEndpoints=["/realtime_private","/realtime","/spot/ws","/trade/option/usdc/private/v1","/unified/private/v3","/contract/private/v3"];
-			publicEndpoints=["/realtime_public","/realtime","/spot/quote/ws/v1","/spot/quote/ws/v2","/trade/option/usdc/public/v1","/perpetual/ws/v1/realtime_public","/contract/usdt/public/v3","/contract/usdc/public/v3","/option/usdc/public/v3","/contract/inverse/public/v3"];
+			publicEndpoints=["/realtime_public","/realtime","/spot/quote/ws/v1","/spot/quote/ws/v2","/trade/option/usdc/public/v1","/perpetual/ws/v1/realtime_public","/contract/usdt/public/v3","/contract/usdc/public/v3","/option/usdc/public/v3","/contract/inverse/public/v3","/option/usdc/public/v3"];
 			function toggleAPI(){
 				if(privateEndpoints.includes(document.getElementById("wsurl").value)){
 					document.getElementById("API").style.display = "block";
@@ -26,6 +26,21 @@
 				}
 				else if(document.getElementById("wsurl").value=="/realtime_public"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBookL2_25.BTCUSDT"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/usdt/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook.25.BTCUSDT"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/usdc/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["publicTrade.BTCPERP"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/inverse/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["tickers.BTCUSD"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/option/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook.100.BTC-9SEP22-14000-C"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/usdc/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook.25..BTCUSDT"]}';
 				}
 				else if(document.getElementById("wsurl").value=="/perpetual/ws/v1/realtime_public"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook_200.100ms.BTCPERP"]}';

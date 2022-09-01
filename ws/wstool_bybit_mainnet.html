@@ -2,38 +2,78 @@
 	<head>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 		<script>
+			environment="stream";
+			domains=["bybit.com","bytick.com"];
+			privateEndpoints=["/realtime_private","/realtime","/spot/ws","/trade/option/usdc/private/v1","/unified/private/v3","/contract/private/v3"];
+			publicEndpoints=["/realtime_public","/realtime","/spot/quote/ws/v1","/spot/quote/ws/v2","/trade/option/usdc/public/v1","/perpetual/ws/v1/realtime_public","/contract/usdt/public/v3","/contract/usdc/public/v3","/option/usdc/public/v3","/contract/inverse/public/v3","/option/usdc/public/v3"];
 			function toggleAPI(){
-				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/ws" || document.getElementById("wsurl").value=="wss://stream.bytick.com/spot/ws" || document.getElementById("wsurl").value=="wss://stream.bybit.com/trade/option/usdc/private/v1"){
+				if(privateEndpoints.includes(document.getElementById("wsurl").value)){
 					document.getElementById("API").style.display = "block";
 				}
 				else{
 					document.getElementById("API").style.display = "none";
 				}
-				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/ws" || document.getElementById("wsurl").value=="wss://stream.bytick.com/spot/ws"){
-					document.getElementById("message_domain").style.display = "none";
+				if(document.getElementById("wsurl").value=="/spot/ws"){
+					document.getElementById("message_domain").style.display = "none"; 
 				}
 				else{
 					document.getElementById("message_domain").style.display = "block";
 				}
 			}
 			function toggleSub(){
-				if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime") {
+				if(document.getElementById("wsurl").value=="/realtime_private" || document.getElementById("wsurl").value=="/realtime"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["position","order","execution"]}';
 				}
-				else if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_public" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime_public") {
+				else if(document.getElementById("wsurl").value=="/realtime_public"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBookL2_25.BTCUSDT"]}';
 				}
-				else if(document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/quote/ws/v1" || document.getElementById("wsurl").value=="wss://stream.bytick.com/spot/quote/ws/v1") {
-					document.getElementById("message").value='{"topic": "depth","event": "sub","symbol": "BTCUSDT","params": {"binary": false}}';
+				else if(document.getElementById("wsurl").value=="/contract/usdt/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook.25.BTCUSDT"]}';
 				}
-				else if(document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/quote/ws/v2" || document.getElementById("wsurl").value=="wss://stream.bytick.com/spot/quote/ws/v2") {
-					document.getElementById("message").value='{"topic": "depth","event": "sub","params": {"symbol": "BTCUSDT","binary": false}}';
+				else if(document.getElementById("wsurl").value=="/contract/usdc/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["publicTrade.BTCPERP"]}';
 				}
-				else if(document.getElementById("wsurl").value=="wss://stream.bybit.com/trade/option/usdc/public/v1"){
+				else if(document.getElementById("wsurl").value=="/contract/inverse/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["tickers.BTCUSD"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/option/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook.100.BTC-9SEP22-14000-C"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/usdc/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook.25..BTCUSDT"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/perpetual/ws/v1/realtime_public"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook_200.100ms.BTCPERP"]}';
 				}
-				else if(document.getElementById("wsurl").value=="wss://stream.bybit.com/trade/option/usdc/private/v1"){
+				else if(document.getElementById("wsurl").value=="/spot/quote/ws/v1"){
+					document.getElementById("message").value='{"topic": "depth","event": "sub","symbol": "BTCUSDT","params": {"binary": false}}';
+				}
+				else if(document.getElementById("wsurl").value=="wss://stream-testnet.bybit.com/spot/quote/ws/v2"){
+					document.getElementById("message").value='{"topic": "depth","event": "sub","params": {"symbol": "BTCUSDT","binary": false}}';
+				}
+				else if(document.getElementById("wsurl").value=="/trade/option/usdc/public/v1"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderbook25.BTC-30SEP22-22000-P"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/trade/option/usdc/private/v1"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["user.openapi.perp.position","user.openapi.perp.order","user.openapi.perp.trade","user.openapi.option.position","user.openapi.option.order","user.openapi.option.trade"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/usdt/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook25.BTCUSDT","orderBook500.BTCUSDT"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/usdc/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook25.BTCPERP","orderBook500.BTCPERP"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/inverse/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook25.BTCUSD","orderBook500.BTCUSD"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/option/usdc/public/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook100.BTC-30DEC22-21000-C"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/unified/private/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["user.order.unifiedAccount","user.execution.unifiedAccount","user.position.unifiedAccount"]}';
+				}
+				else if(document.getElementById("wsurl").value=="/contract/private/v3"){
+					document.getElementById("message").value='{"op": "subscribe", "args": ["user.order.contractAccount","user.execution.contractAccount","user.position.contractAccount"]}';
 				}
 			}
 			function toggleAPIandSub(){
@@ -44,25 +84,28 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	</head>
 <body>
-	<h1>bybit mainnet</h1>
+	<h1>Bybit WSS Demo</h1>
 	<p>    
-	WSURL: <select onchange="toggleAPIandSub()" name="wsurl" id="wsurl">
-	<option value="wss://stream.bybit.com/realtime_private">wss://stream.bybit.com/realtime_private</option>
-	<option value="wss://stream.bytick.com/realtime_private">wss://stream.bytick.com/realtime_private</option>
-	<option value="wss://stream.bybit.com/realtime">wss://stream.bybit.com/realtime</option>
-	<option value="wss://stream.bytick.com/realtime">wss://stream.bytick.com/realtime</option>
-	<option value="wss://stream.bybit.com/realtime_public">wss://stream.bybit.com/realtime_public</option>
-	<option value="wss://stream.bytick.com/realtime_public">wss://stream.bytick.com/realtime_public</option>
-	<option value="wss://stream.bybit.com/spot/quote/ws/v1">wss://stream.bybit.com/spot/quote/ws/v1</option>
-	<option value="wss://stream.bytick.com/spot/quote/ws/v1">wss://stream.bytick.com/spot/quote/ws/v1</option>
-	<option value="wss://stream.bybit.com/spot/quote/ws/v2">wss://stream.bybit.com/spot/quote/ws/v2</option>
-	<option value="wss://stream.bytick.com/spot/quote/ws/v2">wss://stream.bytick.com/spot/quote/ws/v2</option>
-	<option value="wss://stream.bybit.com/spot/ws">wss://stream.bybit.com/spot/ws</option>
-	<option value="wss://stream.bytick.com/spot/ws">wss://stream.bytick.com/spot/ws</option>
-	<option value="wss://stream.bybit.com/trade/option/usdc/public/v1">wss://stream.bybit.com/trade/option/usdc/public/v1</option>
-	<option value="wss://stream.bybit.com/trade/option/usdc/private/v1">wss://stream.bybit.com/trade/option/usdc/private/v1</option>
-	</select>
+	WSURL:<select onchange="toggleAPIandSub()" name="wsurl" id="wsurl">
+	      </select>
 	</p>
+	<script>
+		selectWsUrl=document.getElementById('wsurl');
+		for(i=0;i<domains.length;i++){
+			for(var j=0;j<privateEndpoints.length;j++){
+				var opt=document.createElement('option');
+				opt.value=privateEndpoints[j];
+				opt.innerHTML="wss://"+environment+"."+domains[i]+privateEndpoints[j];
+				wsurl.appendChild(opt);
+			}
+			for(var k=0;k<publicEndpoints.length;k++){
+				var opt=document.createElement('option');
+				opt.value=publicEndpoints[k];
+				opt.innerHTML="wss://"+environment+"."+domains[i]+publicEndpoints[k];
+				wsurl.appendChild(opt);
+			}
+		}
+	</script>
 	<p id="API">
 		Using read-only api key is highly recommended for your own safety <br/>
 		API_Key: <input name="api_key" id="api_key" value="SK69FJHb8NnhhE1X3H"><br/>
@@ -92,13 +135,13 @@
 	</p>
 	<script type="text/javascript">
 	let wsurl = document.querySelector('#wsurl');
+	let i = 0;
 	let button_link = document.querySelector('#button_link');
 	let button_close = document.querySelector('#button_close');
 	let send_sub = document.querySelector('#send_sub');
 	let message= document.querySelector('#message');
 	let wsdata = document.querySelector('#wsdata');
 	let data = {};
-	let i = 0;
 	function connectPrivate(wssHandler){
 		var keys = { 
 			'akey' : document.getElementById("api_key").value,
@@ -110,64 +153,64 @@
 		wssHandler.send(JSON.stringify(auth));
 	}
 	button_link.addEventListener('click',()=>{
-		const binancewss = new WebSocket(wsurl.value);
-		switch(binancewss.readyState){
+		selectedURL=document.getElementById("wsurl").options[document.getElementById("wsurl").selectedIndex].text;
+		const bybitwss = new WebSocket(selectedURL);
+		switch(bybitwss.readyState){
 			case 0:  
 			wsdata.value = wsdata.value + 'linking' + '\n' + "……" + '\n';
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("Socket has been created. The connection is not yet open.");
 			break;
 
 			case 1:
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("The connection is open and ready to communicate.");
 			break;
 
 			case 2:
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("The connection is in the process of closing.");
 			break;
 
 			case 3:
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("The connection is closed or couldn't be opened.");
 			break;
 		}
-		binancewss.addEventListener('open',event=>{
+		bybitwss.addEventListener('open',event=>{
 			wsdata.value = wsdata.value + 'linked' + '\n' + "……" + '\n';
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("The connection is open and ready to communicate.");
-			if(document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bybit.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bybit.com/spot/ws" || document.getElementById("wsurl").value=="wss://stream.bybit.com/trade/option/usdc/private/v1" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime_private" || document.getElementById("wsurl").value=="wss://stream.bytick.com/realtime" || document.getElementById("wsurl").value=="wss://stream.bytick.com/spot/ws"){
-				connectPrivate(binancewss);
+			if(privateEndpoints.includes(document.getElementById("wsurl").value)){
+				connectPrivate(bybitwss);
 			}
-			setInterval( wssHandler => wssHandler.send('{"op":"ping"}'), 10000, binancewss);	
+			setInterval( wssHandler => wssHandler.send('{"op":"ping"}'), 10000, bybitwss);	
 		})
-		binancewss.addEventListener('close',event=>{
+		bybitwss.addEventListener('close',event=>{
 			wsdata.value = wsdata.value + 'closed' + '\n' + "……" + '\n';
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("The connection is closed or couldn't be opened.");
 		})
 
-		binancewss.addEventListener('message',event=>{
+		bybitwss.addEventListener('message',event=>{
 			console.log("Getting message");
-			console.log(event.data);
+			//console.log(event.data);
 			wsdata.value = wsdata.value + event.data + '\n';
 			wsdata.scrollTop = wsdata.scrollHeight;
 		})
 
 		send_sub.addEventListener('click',()=>{
 			wa=message.value;
-			//console.log(wa)
-			binancewss.send(wa);
+			bybitwss.send(wa);
 		})
 		button_close.addEventListener('click', ()=>{
-			if(binancewss.readyState !== 3){
-				binancewss.close();
+			if(bybitwss.readyState !== 3){
+				bybitwss.close();
 			}
 
-			if(binancewss.readyState === 2){
+			if(bybitwss.readyState === 2){
 			wsdata.value = wsdata.value + 'closing' + '\n' + "……" + '\n';
-			console.log(binancewss.readyState);
+			console.log(bybitwss.readyState);
 			console.log("The connection is in the process of closing.");
 			}
 		})

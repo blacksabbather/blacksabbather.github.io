@@ -75,11 +75,11 @@
 				else if(document.getElementById("wsurl").value=="/contract/private/v3"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["user.order.contractAccount","user.execution.contractAccount","user.position.contractAccount"]}';
 				}
-				else if(document.getElementById("wsurl").value=="/spot/public/v3"){
-					document.getElementById("message").value='{"req_id": "10001", "op": "subscribe", "args": ["trade.BTCUSDT", "trade.ETHUSDT", "tickers.BTCUSDT", "bookticker.BTCUSDT"]}';
+				else if(document.getElementById("wsurl").value=="/spot/private/v3"){
+					document.getElementById("message").value='{"req_id":"private0001","op":"subscribe","args":["outboundAccountInfo","order","stopOrder","ticketInfo"]}';
 				}
 				else if(document.getElementById("wsurl").value=="/spot/private/v3"){
-					document.getElementById("message").value='{"req_id": "10001", "op": "subscribe", "args": ["trade.BTCUSDT", "trade.ETHUSDT", "tickers.BTCUSDT", "bookticker.BTCUSDT"]}';
+					document.getElementById("message").value='{"req_id": "10001", "op": "subscribe", "args": ["trade.BTCUSDT", "orderbook.40.BTCUSDT", "tickers.BTCUSDT", "bookticker.BTCUSDT"]}';
 				}
 			}
 			function toggleAPIandSub(){

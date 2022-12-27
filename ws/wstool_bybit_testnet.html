@@ -91,7 +91,7 @@
 					document.getElementById("message").value='{"req_id": "10001", "op": "subscribe", "args": ["trade.BTCUSDT", "orderbook.40.BTCUSDT", "tickers.BTCUSDT", "bookticker.BTCUSDT"]}';
 				}
 				else if(document.getElementById("wsurl").value=="/v5/public/spot"){
-					document.getElementById("message").value='{"req_id": "10001", "op": "subscribe", "args": ["trade.BTCUSDT", "orderbook.40.BTCUSDT", "tickers.BTCUSDT", "bookticker.BTCUSDT"]}';
+					document.getElementById("message").value='{"req_id": "10001", "op": "subscribe", "args": ["publicTrade.BTCUSDT", "orderbook.1.BTCUSDT", "orderbook.50.BTCUSDT", "tickers.BTCUSDT" ]}';
 				}
 			}
 			function toggleAPIandSub(){

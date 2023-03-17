@@ -3,8 +3,8 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 		<script>
 			environment="stream-testnet";
-			domains=["bybit.com","bytick.com"];
-			privateEndpoints=["/realtime_private","/realtime","/spot/ws","/trade/option/usdc/private/v1","/unified/private/v3","/contract/private/v3","/spot/private/v3"];
+			domains=["bybit.com"];
+			privateEndpoints=["/realtime_private","/realtime","/spot/ws","/trade/option/usdc/private/v1","/unified/private/v3","/contract/private/v3","/spot/private/v3","/v5/private"];
 			publicEndpoints=["/realtime_public","/realtime","/spot/quote/ws/v1","/spot/quote/ws/v2","/trade/option/usdc/public/v1","/perpetual/ws/v1/realtime_public","/contract/usdt/public/v3","/contract/usdc/public/v3","/option/usdc/public/v3","/contract/inverse/public/v3","/option/usdc/public/v3","/spot/public/v3","/v5/public/spot","/v5/public/linear","/v5/public/inverse","/v5/public/option"];
 			function toggleAPI(){
 				if(privateEndpoints.includes(document.getElementById("wsurl").value)){

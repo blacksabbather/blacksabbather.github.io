@@ -4,8 +4,8 @@
 		<script>
 			environment="stream-testnet";
 			domains=["bybit.com"];
-			privateEndpoints=["/unified/private/v3","/contract/private/v3","/spot/private/v3","/v5/private"];
-			publicEndpoints=["/contract/usdt/public/v3","/contract/usdc/public/v3","/option/usdc/public/v3","/contract/inverse/public/v3","/option/usdc/public/v3","/spot/public/v3","/v5/public/spot","/v5/public/linear","/v5/public/inverse","/v5/public/option"];
+			privateEndpoints=["/v5/private","/contract/private/v3","/spot/private/v3"];
+			publicEndpoints=["/v5/public/spot","/v5/public/linear","/v5/public/inverse","/v5/public/option","/contract/usdt/public/v3","/contract/usdc/public/v3","/option/usdc/public/v3","/contract/inverse/public/v3","/option/usdc/public/v3","/spot/public/v3"];
 			function toggleAPI(){
 				if(privateEndpoints.includes(document.getElementById("wsurl").value)){
 					document.getElementById("API").style.display = "block";
@@ -50,9 +50,6 @@
 				}
 				else if(document.getElementById("wsurl").value=="/option/usdc/public/v3"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["orderBook100.BTC-30DEC22-21000-C"]}';
-				}
-				else if(document.getElementById("wsurl").value=="/unified/private/v3"){
-					document.getElementById("message").value='{"op": "subscribe", "args": ["user.order.unifiedAccount","user.execution.unifiedAccount","user.position.unifiedAccount"]}';
 				}
 				else if(document.getElementById("wsurl").value=="/contract/private/v3"){
 					document.getElementById("message").value='{"op": "subscribe", "args": ["user.order.contractAccount","user.execution.contractAccount","user.position.contractAccount"]}';
